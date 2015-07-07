@@ -25,26 +25,29 @@ class UIThread(threading.Thread):
 
         super(UIThread, self).__init__()
         self.daemon = True
+        self.windows = []
 
     def run(self):
         """
         Create the preview window and run the Gtk main loop when the UI thead
         is started.
         """
-        self.preview = Preview(show=True)
+        self.open_window()
         Gtk.main()
 
+    def open_window(self, photo=None):
+        """
+        Open a preview window.
+        """
+        self.windows.append(Preview(photo=photo, show=True))
 
-def preview():
-    """
-    Sets up the global state for the UI Thread and starts it if it doesn't
-    exist, and if it does starts it if it's not started.
-    """
 
-    # Launch the UI on start
-    ui_thread = UIThread()
-    ui_thread.start()
-    return ui_thread
+def edit(photo=None):
+    """
+    Open a preview window.
+    """
+    global ui_thread
+    ui_thread.open_window(photo)
 
 
 if __name__ == '__main__':
@@ -57,7 +60,9 @@ if __name__ == '__main__':
     from rawkit.options import WhiteBalance
     from rawkit.raw import Raw
 
-    ui_thead = preview()
+    # Launch the UI on start
+    ui_thread = UIThread()
+    ui_thread.start()
 
     print("""
     Good morning (UGT)! Welcome to photoREPL, an experimental interface for raw
@@ -74,7 +79,7 @@ if __name__ == '__main__':
 
     The following functions are also available:
 
-        preview() — Opens the preview window if you've closed it.
+        edit(photo=None) — Opens the preview window, editing the given file path or an existing photo.
     """)
 
     @atexit.register
