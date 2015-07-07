@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 
 import atexit
+import photorepl
 import threading
 
-from gi.repository import Gtk
+from gi.repository import Gtk, GLib
+
 from photorepl.views.preview import Preview
+
 
 class UIThread(threading.Thread):
 
@@ -15,14 +18,13 @@ class UIThread(threading.Thread):
     """
 
     def __init__(self):
-
         """
         Initialize the ui thead, making sure it's a daemon thread which will
         exit when the main thread is terminated.
         """
 
         super(UIThread, self).__init__()
-        self.daemon=True
+        self.daemon = True
 
     def run(self):
         """
@@ -45,12 +47,21 @@ def preview():
     return ui_thread
 
 
-
-
 if __name__ == '__main__':
+    GLib.set_application_name(photorepl.app_name)
+
+    import libraw
+
+    import rawkit
+    from rawkit.options import Options
+    from rawkit.options import WhiteBalance
+    from rawkit.raw import Raw
+
+    ui_thead = preview()
+
     print("""
-    Welcome to photoREPL, an experimental interface for raw photo editing from
-    the command line with rawkit.
+    Good morning (UGT)! Welcome to photoREPL, an experimental interface for raw
+    photo editing from the command line with `rawkit`.
 
     The following packages, modules, and classes are imported for you:
 
@@ -65,15 +76,6 @@ if __name__ == '__main__':
 
         preview() — Opens the preview window if you've closed it.
     """)
-
-    import libraw
-
-    import rawkit
-    from rawkit.options import Options
-    from rawkit.options import WhiteBalance
-    from rawkit.raw import Raw
-
-    ui_thead = preview()
 
     @atexit.register
     def on_exit():

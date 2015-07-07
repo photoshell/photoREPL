@@ -1,2 +1,2 @@
 
-app = 'photoREPL'
+app_name = 'photoREPL'
