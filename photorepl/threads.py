@@ -32,8 +32,8 @@ class UIThread(threading.Thread):
         Gtk.main()
         Gdk.threads_leave()
 
-    def open_window(self, filename=None):
+    def open_window(self, filename=None, rawfile=None):
         """
-        Open a preview window.
+        Open a new preview window with the given preview file and raw file.
         """
-        return Preview(filename=filename, show=True)
+        return Preview(filename=filename, rawfile=rawfile, show=True)

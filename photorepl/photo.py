@@ -31,7 +31,10 @@ class Photo(Raw):
         """
 
         Gdk.threads_enter()
-        self.preview = self.ui_thread.open_window(self.tempfile)
+        self.preview = self.ui_thread.open_window(
+            self.tempfile,
+            rawfile=self.filename
+        )
         Gdk.threads_leave()
 
     def update(self):
