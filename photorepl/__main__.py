@@ -59,10 +59,16 @@ if __name__ == '__main__':
     For help, use the `help()' function, eg. `help(Photo)'.
     """)
 
-    if len(sys.argv) == 2:
+    if len(sys.argv) == 1:
+        print("""
+    To get started, why not try opening a photo with:
+
+        myphoto = edit(filename=somephoto)
+        """)
+    elif len(sys.argv) == 2:
         print("The file `{}' is available as photos[0].".format(
             sys.argv[1]))
-    elif len(sys.argv) > 1:
+    elif len(sys.argv) > 2:
         print("The files {} are available in the photos[] array.".format(
             sys.argv[1:]))
 
