@@ -2,52 +2,20 @@
 
 import atexit
 import photorepl
+import sys
 import threading
 
-from gi.repository import Gtk, GLib
-
-from photorepl.views.preview import Preview
-
-
-class UIThread(threading.Thread):
-
-    """
-    A thread for displaying UI elements and photos. This thread shouldn't
-    maintain any state which must be preserved, and should act as a daemon
-    thread which exits when the main thread (the REPL) is terminated.
-    """
-
-    def __init__(self):
-        """
-        Initialize the ui thead, making sure it's a daemon thread which will
-        exit when the main thread is terminated.
-        """
-
-        super(UIThread, self).__init__()
-        self.daemon = True
-        self.windows = []
-
-    def run(self):
-        """
-        Create the preview window and run the Gtk main loop when the UI thead
-        is started.
-        """
-        self.open_window()
-        Gtk.main()
-
-    def open_window(self, photo=None):
-        """
-        Open a preview window.
-        """
-        self.windows.append(Preview(photo=photo, show=True))
+from gi.repository import GLib
+from photorepl.threads import UIThread
+from .photo import Photo
 
 
-def edit(photo=None):
+def edit(editable):
     """
     Open a preview window.
     """
     global ui_thread
-    ui_thread.open_window(photo)
+    return Photo(filename=editable, ui_thread=ui_thread)
 
 
 if __name__ == '__main__':
@@ -60,9 +28,12 @@ if __name__ == '__main__':
     from rawkit.options import WhiteBalance
     from rawkit.raw import Raw
 
-    # Launch the UI on start
+    # Launch the UI on start if we specify something to open.
     ui_thread = UIThread()
     ui_thread.start()
+
+    if len(sys.argv) > 1:
+        photos = [edit(arg) for arg in sys.argv[1:]]
 
     print("""
     Good morning (UGT)! Welcome to photoREPL, an experimental interface for raw
@@ -79,7 +50,8 @@ if __name__ == '__main__':
 
     The following functions are also available:
 
-        edit(photo=None) — Opens the preview window, editing the given file path or an existing photo.
+        edit(editable) — Opens the preview window, editing the given file path
+        or an existing photo.
     """)
 
     @atexit.register
