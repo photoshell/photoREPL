@@ -18,5 +18,9 @@ or run it directly: ::
 
     python -i -m photorepl [some_raw_photos]
 
+you can also install it via pip: ::
+
+    pip install photorepl
+
 .. _rawkit: https://github.com/photoshell/rawkit
 .. _docs: https://rawkit.readthedocs.org/
