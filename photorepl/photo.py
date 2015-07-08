@@ -19,10 +19,20 @@ class Photo(Raw):
         self.filename = filename
         self.ui_thread = ui_thread
 
+        self.options.half_size = True
+
         if self.ui_thread is not None:
-            Gdk.threads_enter()
-            self.ui_thread.open_window()
-            Gdk.threads_leave()
+            self.update()
+            self.show()
+
+    def show(self):
+        """
+        Show the preview window.
+        """
+
+        Gdk.threads_enter()
+        self.preview = self.ui_thread.open_window(self.tempfile)
+        Gdk.threads_leave()
 
     def update(self):
         """
@@ -30,6 +40,13 @@ class Photo(Raw):
         """
 
         self.save(filename=self.tempfile, filetype='ppm')
+        try:
+            Gdk.threads_enter()
+            self.preview.render_photo(filename=self.tempfile)
+        except AttributeError:
+            pass
+        finally:
+            Gdk.threads_leave()
 
     def close(self):
         """
