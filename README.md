@@ -1,14 +1,20 @@
 # photoREPL
 
 *photoREPL* is an experimental UI build around the [rawkit][rawkit] raw photo
-editing library for Python. photoREPL drops you at a Python prompt, with a few
-custom functions and a copy of rawkit imported and spawns a preview window.
-That's it.
+editing library for Python.
 
-Eventually the plan is to have the preview window update automatically as you
-update your photo with rawkit. This will then (hopefully) act as the proving
-ground for the [PhotoShell][photoshell] REPL, or will possibly be bundled into
-a library and used as the PhotoShell REPL itself.
+photoREPL drops you at a Python prompt, with a few custom functions and a copy
+of rawkit imported, and spawns a preview window for any photos you edit. As you
+make changes to your photos, the image in the preview window is updated to
+reflect those changes, giving you near real time editing directly from Python
+without a lot of extra update calls!
+
+To run try:
+
+    make run
+
+or run it directly:
+
+    python -i -m photorepl [some_raw_photos]
 
 [rawkit]: https://github.com/photoshell/rawkit
-[photoshell]: https://github.com/photoshell/photoshell
