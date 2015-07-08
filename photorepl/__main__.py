@@ -5,6 +5,12 @@ import photorepl
 import sys
 import threading
 
+try:
+    import pgi
+    pgi.install_as_gi()
+except ImportError:
+    pass
+
 from gi.repository import GLib
 from photorepl.threads import UIThread
 from .photo import Photo

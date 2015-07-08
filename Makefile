@@ -4,11 +4,11 @@ ACTIVATE=source $(BIN)/activate
 
 .PHONY: run
 run: $(VENV)
-	$(ACTIVATE); python -i -m photorepl
+	$(ACTIVATE); pypy3 -i -m photorepl
 
 $(VENV): $(VENV)/bin/activate
 
 $(BIN)/activate: requirements.txt
-	test -d $(VENV) || virtualenv -p /usr/bin/python3 $(VENV)
+	test -d $(VENV) || virtualenv -p pypy3 $(VENV)
 	$(ACTIVATE); pip install -r requirements.txt
 	touch $(BIN)/activate
