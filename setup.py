@@ -11,7 +11,7 @@ def readme():
 setup(
     name='photoREPL',
     version=version,
-    description='Experimental CLI raw photo editor',
+    description='Experimental CLI/GUI hybrid raw photo editor',
     author='Sam Whited',
     author_email='sam@samwhited.com',
     maintainer='Sam Whited',
