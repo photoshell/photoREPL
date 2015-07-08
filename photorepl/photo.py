@@ -2,7 +2,35 @@ import os
 import tempfile
 
 from gi.repository import Gdk
+
+from rawkit.options import Options
 from rawkit.raw import Raw
+
+
+class AutoUpdatingOptions(Options):
+
+    """
+    A set of options that update the photo when they are updated.
+    """
+
+    def __init__(self, attrs=None, photo=None):
+        super().__init__(attrs=attrs)
+        self.photo = photo
+
+    def __setattr__(self, name, value):
+        try:
+            Options.__setattr__(self, name, value)
+            self.update()
+        except AttributeError:
+            self.__dict__['name'] = value
+
+    def update(self):
+        """
+        Updates the photo which contains these options.
+        """
+
+        if self.photo is not None:
+            self.photo.update()
 
 
 class Photo(Raw):
@@ -19,11 +47,25 @@ class Photo(Raw):
         self.filename = filename
         self.ui_thread = ui_thread
 
-        self.options.half_size = True
-
         if self.ui_thread is not None:
             self.update()
             self.show()
+
+    def __setattr__(self, name, value):
+        if name == 'options' and type(value) is Options:
+            self.__dict__['options'] = AutoUpdatingOptions(
+                attrs=dict(zip(
+                    value.keys(),
+                    value.values()
+                )),
+                photo=self
+            )
+            try:
+                self.update()
+            except AttributeError:
+                pass
+        else:
+            Raw.__setattr__(self, name, value)
 
     def show(self):
         """
