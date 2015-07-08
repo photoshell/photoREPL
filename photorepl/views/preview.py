@@ -20,7 +20,15 @@ class Preview(Gtk.Window):
         self.set_default_size(800, 600)
 
         self.settings = Gtk.Settings.get_default()
-        self.settings.set_property('gtk-application-prefer-dark-theme', True)
+
+        try:
+            self.settings.set_property(
+                'gtk-application-prefer-dark-theme',
+                True
+            )
+        except TypeError:
+            # Can't do this if we're using pgi for some reason.
+            pass
 
         self.box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
 

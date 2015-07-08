@@ -9,6 +9,6 @@ run: $(VENV)
 $(VENV): $(VENV)/bin/activate
 
 $(BIN)/activate: requirements.txt
-	test -d $(VENV) || virtualenv -p /usr/bin/python3 --system-site-packages $(VENV)
+	test -d $(VENV) || virtualenv -p /usr/bin/python3 $(VENV)
 	$(ACTIVATE); pip install -r requirements.txt
 	touch $(BIN)/activate

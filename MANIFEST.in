@@ -1,0 +1,5 @@
+include LICENSE
+include *.rst
+include *.txt
+include Makefile
+recursive-include photorepl/*.py
