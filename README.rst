@@ -1,8 +1,8 @@
 photoREPL
 =========
 
-``photoREPL`` is an experimental UI build around the rawkit_ raw photo editing
-library for Python.
+``photoREPL`` is an experimental UI build around the rawkit_ (docs_) raw photo
+editing library for Python.
 
 photoREPL drops you at a Python prompt, with a few custom functions and a copy
 of rawkit imported, and spawns a preview window for any photos you edit. As you
@@ -19,3 +19,4 @@ or run it directly: ::
     python -i -m photorepl [some_raw_photos]
 
 .. _rawkit: https://github.com/photoshell/rawkit
+.. _docs: https://rawkit.readthedocs.org/
