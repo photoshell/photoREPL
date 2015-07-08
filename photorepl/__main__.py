@@ -10,12 +10,12 @@ from photorepl.threads import UIThread
 from .photo import Photo
 
 
-def edit(editable):
+def edit(filename):
     """
-    Open a preview window.
+    Opens the given filename and spawns a preview window.
     """
     global ui_thread
-    return Photo(filename=editable, ui_thread=ui_thread)
+    return Photo(filename=filename, ui_thread=ui_thread)
 
 
 if __name__ == '__main__':
@@ -37,11 +37,15 @@ if __name__ == '__main__':
 
     print("""
     Good morning (UGT)! Welcome to photoREPL, an experimental interface for raw
-    photo editing from the command line with `rawkit`.
+    photo editing from the command line with `rawkit'.
 
-    The following packages, modules, and classes are imported for you:
+    The following packages, modules, and classes are imported for you (among
+    others):
 
         libraw
+
+        photorepl
+        photorepl.photo.Photo
 
         rawkit
         rawkit.options.Options
@@ -50,9 +54,17 @@ if __name__ == '__main__':
 
     The following functions are also available:
 
-        edit(editable) — Opens the preview window, editing the given file path
-        or an existing photo.
+        edit(filename)
+
+    For help, use the `help()' function, eg. `help(Photo)'.
     """)
+
+    if len(sys.argv) == 2:
+        print("The file `{}' is available as photos[0].".format(
+            sys.argv[1]))
+    elif len(sys.argv) > 1:
+        print("The files {} are available in the photos[] array.".format(
+            sys.argv[1:]))
 
     @atexit.register
     def on_exit():
