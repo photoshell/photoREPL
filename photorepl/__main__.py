@@ -16,12 +16,16 @@ from photorepl.threads import UIThread
 from .photo import Photo
 
 
-def edit(filename):
+def edit(filename, cache=True):
     """
     Opens the given filename and spawns a preview window.
     """
     global ui_thread
-    return Photo(filename=filename, ui_thread=ui_thread)
+    photo = Photo(filename=filename, ui_thread=ui_thread)
+    if cache:
+        global photos
+        photos.append(photo)
+    return photo
 
 
 if __name__ == '__main__':
@@ -39,7 +43,9 @@ if __name__ == '__main__':
     ui_thread.start()
 
     if len(sys.argv) > 1:
-        photos = [edit(arg) for arg in sys.argv[1:]]
+        photos = [edit(arg, cache=False) for arg in sys.argv[1:]]
+    else:
+        photos = []
 
     print("""
     Good morning (UGT)! Welcome to photoREPL, an experimental interface for raw
