@@ -46,6 +46,7 @@ class Photo(Raw):
         (self.fhandle, self.tempfile) = tempfile.mkstemp()
         self.filename = filename
         self.ui_thread = ui_thread
+        self._closed = False
 
         if self.ui_thread is not None:
             self.update()
@@ -93,10 +94,16 @@ class Photo(Raw):
         finally:
             Gdk.threads_leave()
 
+    @property
+    def closed(self):
+        return self._closed
+
     def close(self):
         """
         Cleans up the underlying raw file and unlinks any temp files.
         """
 
-        super().close()
-        os.unlink(self.tempfile)
+        if not self.closed:
+            super().close()
+            os.unlink(self.tempfile)
+            self._closed = True

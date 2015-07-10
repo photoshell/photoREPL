@@ -86,6 +86,12 @@ if __name__ == '__main__':
 
     @atexit.register
     def on_exit():
+
+        # Cleanup
+        global photos
+        for photo in photos:
+            photo.close()
+
         print("""
         Goodbye. If photoREPL immediately exited, be sure you're running
         photoREPL with `python -i -m photorepl' so that it can fall back to a
