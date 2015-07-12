@@ -1,5 +1,6 @@
 import os
 import tempfile
+import threading
 
 from gi.repository import Gdk
 
@@ -80,19 +81,24 @@ class Photo(Raw):
         )
         Gdk.threads_leave()
 
-    def update(self):
-        """
-        Updates the photo on disk and in the preview pane.
-        """
-
-        self.save(filename=self.tempfile, filetype='ppm')
+    def _update(self):
         try:
             Gdk.threads_enter()
+            self.save(filename=self.tempfile, filetype='ppm')
             self.preview.render_photo(filename=self.tempfile)
         except AttributeError:
             pass
         finally:
             Gdk.threads_leave()
+
+    def update(self):
+        """
+        Updates the photo on disk and in the preview pane.
+        """
+
+        t = threading.Thread(target=self._update)
+        t.daemon = True
+        t.start()
 
     @property
     def closed(self):
