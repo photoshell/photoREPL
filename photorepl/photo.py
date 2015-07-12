@@ -106,4 +106,5 @@ class Photo(Raw):
         if not self.closed:
             super().close()
             os.unlink(self.tempfile)
+            self.preview.close()
             self._closed = True
