@@ -70,7 +70,7 @@ class Preview(Gtk.Window):
         except AttributeError:
             pass
 
-        pix = GdkPixbuf.Pixbuf.new_from_file_at_scale(filename, 800, -1, True)
+        pix = GdkPixbuf.Pixbuf.new_from_file_at_size(filename, 800, 600)
         self.image = Gtk.Image.new_from_pixbuf(pix)
         self.box.pack_start(self.image, True, True, 0)
         self.show_all()
