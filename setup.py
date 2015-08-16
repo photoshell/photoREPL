@@ -16,7 +16,7 @@ setup(
     author_email='sam@samwhited.com',
     maintainer='Sam Whited',
     maintainer_email='sam@samwhited.com',
-    url='https://github.com/SamWhited/photorepl',
+    url='https://github.com/photoshell/photorepl',
     packages=['photorepl'],
     keywords=[
         'encoding', 'images', 'photography', 'libraw', 'raw', 'photos',
