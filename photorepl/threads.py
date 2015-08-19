@@ -28,9 +28,11 @@ class UIThread(threading.Thread):
         """
         Gdk.threads_init()
 
-        Gdk.threads_enter()
-        Gtk.main()
-        Gdk.threads_leave()
+        try:
+            Gdk.threads_enter()
+            Gtk.main()
+        finally:
+            Gdk.threads_leave()
 
     def open_window(self, filename=None, rawfile=None):
         """

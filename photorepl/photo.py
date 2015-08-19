@@ -74,12 +74,14 @@ class Photo(Raw):
         Show the preview window.
         """
 
-        Gdk.threads_enter()
-        self.preview = self.ui_thread.open_window(
-            self.tempfile,
-            rawfile=self.filename
-        )
-        Gdk.threads_leave()
+        try:
+            Gdk.threads_enter()
+            self.preview = self.ui_thread.open_window(
+                self.tempfile,
+                rawfile=self.filename
+            )
+        finally:
+            Gdk.threads_leave()
 
     def _update(self):
         try:
