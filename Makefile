@@ -1,23 +1,14 @@
-VENV=env
-BIN=$(VENV)/bin
-ACTIVATE=source $(BIN)/activate
+RUN=pipenv run
 
 .PHONY: run
-run: $(VENV)
-	$(ACTIVATE); pypy3 -i -m photorepl
+run:
+	$(RUN) python -i -m photorepl
 
-$(VENV): $(VENV)/bin/activate
+dist/*.whl: setup.py photorepl/*.py Pipfile Pipfile.lock
+	$(RUN) python setup.py bdist_wheel
 
-$(BIN)/activate: requirements.txt
-	test -d $(VENV) || virtualenv -p pypy3 $(VENV)
-	$(ACTIVATE); pip install -r requirements.txt
-	touch $(BIN)/activate
-
-dist/*.whl: setup.py photorepl/*.py
-	python setup.py bdist_wheel
-
-dist/*.tar.gz: setup.py photorepl/*.py
-	python setup.py sdist bdist
+dist/*.tar.gz: setup.py photorepl/*.py Pipfile Pipfile.lock
+	$(RUN) python setup.py sdist bdist
 
 .PHONY: wheel
 wheel: dist/*.whl
@@ -27,7 +18,7 @@ dist: dist/*.tar.gz
 
 .PHONY: upload
 upload: clean
-	python setup.py sdist bdist bdist_wheel upload
+	$(RUN) python setup.py sdist bdist bdist_wheel upload
 
 .PHONY: clean
 clean:
@@ -35,5 +26,4 @@ clean:
 	find . -iname '__pycache__' -type d | xargs rm -rf
 	rm -rf build
 	rm -rf dist
-	rm -rf $(VENV)
 	rm -rf *.egg-info
